@@ -17,7 +17,7 @@
 
 #include "bot.h"
 
-#ifndef __linux__
+#ifdef _WIN32
 #include <windows.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -63,7 +63,7 @@ char *holywars_bot_names[HOLYWARS_MAX_SKINS] = {
    "Akedo", "B.A.D.", "Barney", "Gordon", "Helmet"};
 
 
-#ifndef __linux__
+#ifdef _WIN32
 
 // MS-DOS directory wildcard routines...
 
@@ -175,7 +175,7 @@ void LoadBotModels(void)
    char filename[MAX_PATH];
    int index;
    struct stat stat_str;
-#ifndef __linux__
+#ifdef _WIN32
    HANDLE directory = NULL;
 #else
    DIR *directory = NULL;
@@ -229,7 +229,7 @@ void LoadBotModels(void)
 
    strcpy(search_path, path);
 
-#ifndef __linux__
+#ifdef _WIN32
    strcat(search_path, "/*");
 #endif
 

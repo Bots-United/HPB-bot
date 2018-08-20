@@ -11,7 +11,7 @@
 
 // stuff for Win32 vs. Linux builds
 
-#ifdef __linux__
+#ifndef _WIN32
 #define Sleep sleep
 typedef int BOOL;
 #endif

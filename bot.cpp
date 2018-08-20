@@ -772,7 +772,7 @@ void BotLogoInit(void)
    char logo_buffer[80];
    int length, index;
 
-#ifndef __linux__
+#ifdef _WIN32
    HANDLE h_logo;
    char dir_name[32];
    char decal_filename[256];

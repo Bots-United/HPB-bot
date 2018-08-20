@@ -36,7 +36,7 @@ int botMsgIndex;
 static FILE *fp;
 
 
-void pfnChangeLevel(char* s1, char* s2)
+void pfnChangeLevel(const char* s1, const char* s2)
 {
    // kick any bot off of the server after time/frag limit...
    for (int index = 0; index < 32; index++)
@@ -140,7 +140,7 @@ void pfnEmitSound(edict_t *entity, int channel, const char *sample, /*int*/float
 }
 
 
-void pfnClientCommand(edict_t* pEdict, char* szFmt, ...)
+void pfnClientCommand(edict_t* pEdict, const char* szFmt, ...)
 {
    if ((pEdict->v.flags & FL_FAKECLIENT) || (pEdict->v.flags & FL_THIRDPARTYBOT))
       RETURN_META (MRES_SUPERCEDE);

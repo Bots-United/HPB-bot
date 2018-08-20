@@ -1,9 +1,16 @@
-CPP = gcc-2.95.3
+CC = gcc
+CPP = g++
 TARGET = hpb_bot_mm
-ARCHFLAG = i586
+ARCHFLAG = -m32
 BASEFLAGS = -Dstricmp=strcasecmp -Dstrcmpi=strcasecmp
-OPTFLAGS = 
-CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} -march=${ARCHFLAG} -O2 -w -I"../metamod" -I"../../devtools/hlsdk-2.3/multiplayer/common" -I"../../devtools/hlsdk-2.3/multiplayer/dlls" -I"../../devtools/hlsdk-2.3/multiplayer/engine" -I"../../devtools/hlsdk-2.3/multiplayer/pm_shared"
+OPTFLAGS =
+CPPFLAGS = ${BASEFLAGS} ${OPTFLAGS} ${ARCHFLAG} -O2 -w \
+	-I"../metamod" \
+	-I"../../hlsdk/public" \
+	-I"../../hlsdk/common" \
+	-I"../../hlsdk/dlls" \
+	-I"../../hlsdk/engine" \
+	-I"../../hlsdk/pm_shared"
 
 OBJ = 	bot.o \
 	bot_chat.o \
@@ -18,22 +25,28 @@ OBJ = 	bot.o \
 	util.o \
 	waypoint.o
 
-${TARGET}_i386.so: ${OBJ}
-	${CPP} -fPIC -shared -o $@ ${OBJ} -Xlinker -Map -Xlinker ${TARGET}.map -ldl
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+SO_SUFFIX = so
+endif
+ifeq ($(UNAME_S),Darwin)
+SO_SUFFIX = dylib
+endif
+
+${TARGET}_i386.${SO_SUFFIX}: ${OBJ}
+	${CPP} ${ARCHFLAG} -fPIC -shared -o $@ ${OBJ} -ldl
+	-mkdir Release
 	mv *.o Release
-	mv *.map Release
 	mv $@ Release
 
 clean:
-	rm -f Release/*.o
-	rm -f Release/*.map
+	-rm -f Release/*.o
 
 distclean:
-	rm -rf Release
-	mkdir Release	
+	-rm -rf Release
 
 %.o:	%.cpp
 	${CPP} ${CPPFLAGS} -c $< -o $@
 
 %.o:	%.c
-	${CPP} ${CPPFLAGS} -c $< -o $@
+	${CC} ${CPPFLAGS} -c $< -o $@

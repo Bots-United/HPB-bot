@@ -5,13 +5,15 @@
 // waypoint.cpp
 //
 
-#ifndef __linux__
+#ifdef _WIN32
 #include <io.h>
+#else
+#include <unistd.h>
 #endif
 
 #include <fcntl.h>
 
-#ifndef __linux__
+#ifdef _WIN32
 #include <sys\stat.h>
 #else
 #include <string.h>
@@ -1275,7 +1277,7 @@ bool WaypointLoad(edict_t *pEntity)
    char mapname[64];
    char filename[256];
    char new_filename[256];
-#ifdef __linux__
+#ifndef _WIN32
    char cmd[512];
 #endif
    WAYPOINT_HDR header;
@@ -1391,7 +1393,7 @@ bool WaypointLoad(edict_t *pEntity)
 
          UTIL_BuildFileName(new_filename, "maps", mapname);
 
-#ifndef __linux__
+#ifdef _WIN32
          rename(filename, new_filename);
 #else
          sprintf(cmd, "/bin/mv -f %s %s", filename, new_filename);
